@@ -1,0 +1,15 @@
+generator client {
+    provider = "prisma-client-js"
+    output   = "../../node_modules/@db_prisma/mongo"
+}
+
+datasource db {
+    provider     = "mongodb"
+    url          = env("MONGODB_URL")
+}
+
+model biodata {
+    id    String @id @default(auto()) @map("_id") @db.ObjectId
+    name  String
+    email String
+}

@@ -1,8 +1,25 @@
 import { INestApplication, Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { PrismaClient as PrismaClientMongo } from '@db_prisma/mongo';
 
 @Injectable()
 export class PrismaService extends PrismaClient
+    implements OnModuleInit {
+
+    async onModuleInit() {
+        await this.$connect();
+    }
+
+    async enableShutdownHooks(app: INestApplication) {
+        this.$on('beforeExit', async () => {
+            await app.close();
+        });
+    }
+}
+
+
+@Injectable()
+export class PrismaServiceMongo extends PrismaClientMongo
     implements OnModuleInit {
 
     async onModuleInit() {
